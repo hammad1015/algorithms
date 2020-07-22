@@ -20,16 +20,20 @@ def M_knapsack(weights, values, size):
         for _ in range(size)]
         for _ in range(n)
     ]
-    
-    for i in range(size): M[0][i] = 0
     for i in range(n)   : M[i][0] = 0
+    for j in range(size): M[0][j] = 0
+    
     
     for i in range(n):
         for j in range(size):
-            if M[i][j] == None:
+            
+            if weights[i] > j:
+                M[i][j] = M[i-1][j]
+                
+            else:
                 M[i][j] = max(
                     M[i-1][j], 
-                    M[i-1][size - weights[i]] + values[i]
+                    M[i-1][j - weights[i]] + values[i]
                 )
     
-    return M[i][size]
+    return M[-1][-1]

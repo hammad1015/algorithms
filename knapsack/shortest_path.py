@@ -29,4 +29,35 @@ def floyd_warshall(verticies, edges, weights):
                 )
                 
     return dist
+
+
+
+def bellman_ford(vertex, verticies, edges, weights):
+    
+    v   = len(verticies)
+    e   = len(edges)
+    inf = max(weights) * e
+    
+    vertex = verticies.index(vertex)
+    
+    dist = [
+        inf
+        for _ in range(v)
+    ]
+    for i in range(e):
+        v1 = verticies.index(edges[i][0])
+        v2 = verticies.index(edges[i][1])
         
+        if v1 == vertex: dist[v2] = weight[i]
+        if v2 == vertex: dist[vi] = weight[i]
+            
+    for i in range(e):
+        v1 = verticies.index(edges[i][0])
+        v2 = verticies.index(edges[i][1])
+        
+        dist[v2] = min(
+            dist[v2],
+            dist[v1] + weight[i]
+        )
+        
+    return dist

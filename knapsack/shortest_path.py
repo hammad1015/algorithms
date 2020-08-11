@@ -1,63 +1,64 @@
-def floyd_warshall(verticies, edges, weights):
+""" 
+Node : any_hashable_obj
+Graph: dict[Node, dict[Node, int]] 
+"""
+
+def floyd_warshall(graph: Graph) -> Graph:
     
-    v   = len(verticies)                    # number of verticies in graph
-    e   = len(edges)                        # number of edges in graph
-    inf = max(weights) * e                  # virtual infinity
+    """ takes in a graph and returns a fully connected copy of it,
+        where the weight of edge between two nodes equals the minimum 
+        distance between the corresponding nodes of the orignal graph
+    """
     
-    dist = [[                               # initializing distance matrix
-        inf                                 
-        for _ in range(n)
-    ]   for _ in range(n)
-    ]
+    inf = float('inf')                              # virtual infinity
     
-    for i in range(n):                      # distance from each vertex to itself equals 0
-        dist[i][i] = 0
+    dist = { n1:{ n2:                               # initializing distance graph
+        inf
+        for n1 in graph
+    }   for n2 in graph
+    }
+    
+    for n in graph:                                 # distance from each node to itself equals 0
+        dist[n][n] = 0
         
-    for i in range(e):                      # distance between two verticies equals 
-        v1 = verticies.index(edges[i][0])   # the weight of the edge between them, if any
-        v2 = verticies.index(edges[i][1])
-        
-        dist[v1][v2] = weights[i]
+    for n1 in graph:                                # distance between two nodes equals weight of edge between them 
+        for n2 in graph[v1]:
+            dist[n1][n2] = graph[n1][n2]
     
     
-    for i in range(n):
-        for j in range(n):
-            for k in range(n):
-                dist[i][k] = min(           # minimum distance between two verticies is covered either by
-                    dist[i][j],             # moving to the second vertex directly or
-                    dist[i][k] + dist[k][j] # moving to an intermediate vertex before moving to the second vertex
+    for n1 in graph:
+        for n2 in graph:
+            for n3 in graph:
+                dist[n1][n2] = min(                 # minimum distance between two verticies is covered either by
+                    dist[n1][n2],                   # moving to the second vertex directly or
+                    dist[n1][n3] + dist[n3][n2]     # moving to an intermediate vertex, then moving to the second vertex
                 )
                 
     return dist
 
 
 
-def bellman_ford(vertex, verticies, edges, weights):
+def bellman_ford(vertex: Node, grapg: Graph) -> dict[Node, int]:
     
-    v   = len(verticies)
-    e   = len(edges)
-    inf = max(weights) * e
+    """ takes in a node "vertex" and a graph, and returns a map
+        of graph's nodes and their minimum distance to "vertex"
+    """
     
-    vertex = verticies.index(vertex)
+    inf = float('inf')                      # virtual infinity
     
-    dist = [
-        inf
-        for _ in range(v)
-    ]
-    for i in range(e):
-        v1 = verticies.index(edges[i][0])
-        v2 = verticies.index(edges[i][1])
+    dist = {                                # initializing distance map
+        n: inf
+        for n in graph
+    }
+    
+    for n in graph[vertex]:
+        dist[n] = graph[vertex][n]          # distance from "vertex" to it's neighbours equals the weight of edge between them
         
-        if v1 == vertex: dist[v2] = weight[i]
-        if v2 == vertex: dist[vi] = weight[i]
-            
-    for i in range(e):
-        v1 = verticies.index(edges[i][0])
-        v2 = verticies.index(edges[i][1])
-        
-        dist[v2] = min(
-            dist[v2],
-            dist[v1] + weight[i]
-        )
+    for n1 in graph:
+        for n2 in graph[n1]:
+            dist[n2] = min(                 # minimum distance between "vertex" and any other node is either 
+                dist[n2],                   # the currently agreed minimum distance to the node or
+                dist[n1] + graph[n1][n2]    # the distance to its neighbour + weight of edge between it and the neighbour
+            )
         
     return dist

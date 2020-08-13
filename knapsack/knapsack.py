@@ -12,9 +12,9 @@ def knapsack(i, size):
     )
 
     
-def M_knapsack(weights, values, size):
+def M_knapsack(items: list[tuple[float, float]], size: int) -> float:
     
-    n = len(values)
+    n = len(items)
     M = [[
         0
         for _ in range(size)
@@ -22,15 +22,17 @@ def M_knapsack(weights, values, size):
     ]
     
     for i in range(n):
+        
+        v, w = item[i]                  # value and weight of the item
         for s in range(size):
             
-            if weights[i] > s:
-                M[i][s] = M[i-1][s]
+            if w > s:                   # if weight of the current item is more than the knapsack size
+                M[i][s] = M[i-1][s]     # then we dont take it 
                 
-            else:
-                M[i][s] = max(
-                    M[i-1][s], 
-                    M[i-1][s - weights[i]] + values[i]
+            else:                       # if weight of the current item is less than the knapsack size
+                M[i][s] = max(          # we take it, if taking it maximises our total value
+                    M[i-1][s],
+                    M[i-1][s - w] + v
                 )
     
     return M[-1][-1]

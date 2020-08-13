@@ -14,26 +14,23 @@ def knapsack(i, size):
     
 def M_knapsack(weights, values, size):
     
-    n = len(weights)
+    n = len(values)
     M = [[
-        None 
-        for _ in range(size)]
-        for _ in range(n)
+        0
+        for _ in range(size)
+    ]   for _ in range(n)
     ]
-    for i in range(n)   : M[i][0] = 0
-    for j in range(size): M[0][j] = 0
-    
     
     for i in range(n):
-        for j in range(size):
+        for s in range(size):
             
-            if weights[i] > j:
-                M[i][j] = M[i-1][j]
+            if weights[i] > s:
+                M[i][s] = M[i-1][s]
                 
             else:
-                M[i][j] = max(
-                    M[i-1][j], 
-                    M[i-1][j - weights[i]] + values[i]
+                M[i][s] = max(
+                    M[i-1][s], 
+                    M[i-1][s - weights[i]] + values[i]
                 )
     
     return M[-1][-1]

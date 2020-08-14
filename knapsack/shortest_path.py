@@ -22,7 +22,7 @@ def floyd_warshall(graph: Graph) -> Graph:
         dist[n][n] = 0
         
     for n1 in graph:                                # distance between two nodes equals weight of edge between them 
-        for n2 in graph[v1]:
+        for n2 in graph[n1]:
             dist[n1][n2] = graph[n1][n2]
     
     
@@ -38,7 +38,7 @@ def floyd_warshall(graph: Graph) -> Graph:
 
 
 
-def bellman_ford(vertex: Node, grapg: Graph) -> dict[Node, int]:
+def bellman_ford(vertex: Node, graph: Graph) -> dict[Node, int]:
     
     """ takes in a node "vertex" and a graph, and returns a map
         of graph's nodes and their minimum distance to "vertex"

@@ -12,8 +12,8 @@ def floyd_warshall(graph: Graph) -> Graph:
     
     inf = float('inf')                              # virtual infinity
     
-    dist = { n1:{ n2:                               # initializing distance graph
-        inf
+    dist = { 
+        n1:{ n2: inf                                # initializing distance graph
         for n1 in graph
     }   for n2 in graph
     }
